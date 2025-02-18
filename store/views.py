@@ -25,10 +25,16 @@ def add_to_cart(request, slug):
     
     if created:
         cart.orders.add(order)
-        cart.save()
+        cart.save() 
     else:
         order.quantity +=1
         order.save()
 
     return redirect(reverse("product", kwargs={"slug": slug}))
+
+ 
+def cart(request):
+    cart = get_object_or_404(Cart, user=request.user)
+
+    return render(request, 'store/cart.html', context={"orders": cart.orders.all()})
 
